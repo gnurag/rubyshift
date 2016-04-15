@@ -4,7 +4,8 @@ RubyShift is a Ruby client for [OpenShift's REST API](https://access.redhat.com/
 
 ## Installation
 
-Installing from rubygrms:
+Installing from rubygems:
+
 ```sh
 gem install rubyshift
 ```
