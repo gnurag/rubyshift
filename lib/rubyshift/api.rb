@@ -10,6 +10,7 @@ module RubyShift
       (Configuration::VALID_OPTIONS_KEYS + [:access_token]).each do |key|
         send("#{key}=", options[key]) if options[key]
       end
+      set_request_defaults
     end
   end
 end

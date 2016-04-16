@@ -91,9 +91,9 @@ module RubyShift
 
     # Sets default_params for requests.
     # @raise [Error::MissingCredentials] if endpoint not set.
-    def set_request_defaults
-      raise Error::MissingCredentials.new("Please set an endpoint to API") unless @endpoint
-      # self.class.default_params foo: :bar
+    def set_request_defaults(httparty=nil)
+      raise Error::MissingCredentials.new("Please set an API endpoint") unless @endpoint
+      #self.class.default_params[:httparty] = {} if httparty.nil?
     end
 
     private
@@ -118,9 +118,21 @@ module RubyShift
       message = parsed_response
 
       "Server responded with code #{response.code}, message: " \
-      "#{message}. " \
+      "#{handle_error(message)}. " \
       "Request URI: #{response.request.base_uri}#{response.request.path}"
     end
-    
+
+    def handle_error(message)
+      case message
+      when OpenStruct
+        message.to_h.sort.map do |key, val|
+          "'#{key}' #{(val.is_a?(Hash) ? val.sort.map { |k, v| "(#{k}: #{v.join(' ')})" } : val).join(' ')}"
+        end.join(', ')
+      when Array
+        message.join(' ')
+      else
+        message
+      end
+    end
   end
 end
