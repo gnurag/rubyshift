@@ -37,4 +37,19 @@ describe RubyShift::Client do
 			expect(@application.framework).to eq("ruby-2.0")
 		end
 	end
+
+	describe ".application_resolve" do
+		before do
+			stub_get("/application/5714ae1189f5cf026b00002f/dns_resolvable", "application_resolve")
+			@dns = RubyShift.application_resolve("5714ae1189f5cf026b00002f")
+		end
+
+		it "should resolve the application's dns name" do
+			expect(a_get("/application/5714ae1189f5cf026b00002f/dns_resolvable")).to have_been_made
+		end
+
+		it "should return true when application is resolved" do
+			expect(@dns).to eq(true)
+		end
+	end
 end
